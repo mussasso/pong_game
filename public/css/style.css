@@ -1,18 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background: no-repeat;
   background-size: cover;
+  height: 100vh;
+  width: 100vw;
 }
-body #block1 {
+
+.myback {
+  background: linear-gradient(45deg, #e66465, #9198e5);
+}
+
+/* #blo1 {
   width: 0.5rem;
-  height: 5rem;
+  height: 10rem;
   background-color: red;
+  border: 0.5px solid black;
   border-radius: 5px;
 }
-body #block2 {
-  width: 0.5rem;
-  height: 5rem;
-  background-color: red;
-  border-radius: 5px;
+
+#ball {
+  width: 25px;
+  height: 25px;
+  right: 820;
+  top: 510px;
+  border-radius: 50%;
+  border: 0.5px solid white;
+  background-color: lightblue;
 }
+#blo2 {
+  right: 0;
+  top: 460px;
+  width: 0.5rem;
+  height: 10rem;
+  background-color: red;
+  border: 0.5px snpmolid black;
+  border-radius: 5px;
+} */
 
 /*# sourceMappingURL=style.css.map */
