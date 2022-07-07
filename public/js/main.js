@@ -3,6 +3,8 @@
 
 let random = Math.floor(Math.random()*7)
 let background = document.getElementsByTagName('canvas')[0]
+let joueur = document.getElementsByTagName('select')[0]
+console.log(joueur);
 
 
 
@@ -47,22 +49,21 @@ let context= canvas.getContext('2d'),
     context.scale(ratio, ratio)
 
     class Ball{
-        constructor(vx, vy)
+        constructor(vx, vy , ax , ay)
         {
             this.x= width/2
             this.y= height/2
             this.vx= vx;
             this.vy= vy;
-            this.ax=0
-            this.ay=0
+            this.ax=ax
+            this.ay=ay
         }
         update()
         {
             this.edges()
             this.x += this.vx
             this.y += this.vy
-            this.vx += this.ax
-            this.vy += this.ay
+            
 
             this.r = 15 
         }
@@ -76,6 +77,10 @@ let context= canvas.getContext('2d'),
             if (this.x + this.r > width) {
                 Restartgame()
                 p1.score++
+                if (p1.score+1 == true) {
+                    this.vx += this.ax
+                    this.vy += this.ay
+                }
                 if (p1.score == 10) {
                     alert('le joueur 1 a gagner')
                     p1.score = 0
@@ -84,6 +89,10 @@ let context= canvas.getContext('2d'),
             else if (this.x - this.r < 0) {
                 Restartgame()
                 p2.score++
+                if (p2.score == 2) {
+                    this.vx += 1
+                    this.vy += 1
+                }
                 if (p2.score == 10) {
                     alert('le joueur 1 a gagner')
                     p2.score = 0
@@ -106,6 +115,7 @@ let context= canvas.getContext('2d'),
             if (left < pright && right> pleft && top < pbottom && bottom > ptop) 
             {
                 this.vx *= -1
+                this.vx += 2
             }
         }
         show()
@@ -135,9 +145,11 @@ let context= canvas.getContext('2d'),
                 context.fillRect(left , top , this.w , this.h)
         }
     }
-    let ball = new Ball(-4 , 3)
+    let ball = new Ball(-4 , 5 ,1 , 1)
     let p1 = new Player(20 , 250 )
     let p2 = new Player(width-20 , width - 400)
+    let bot = new Player(width-20 , width - 400)
+    
     addEventListener('mousemove' ,function(e){
         p1.y = e.clientY
     })
@@ -164,13 +176,27 @@ let context= canvas.getContext('2d'),
         context.moveTo(width / 2,0)
         context.lineTo(width / 2, height)
         context.stroke()
+  
+        if (joueur.value == "deuxieme jouer") {
+            ball.players(p1)
+            ball.players(p2)
+            ball.update()
+            ball.show()
+            p1.show()
+            p2.show()
+            requestAnimationFrame(animate)
+            
+        } else if (joueur.value == "ai") {
+            bot.y += ((ball.y - (bot.y + bot.h/2)))*0.1;
+            ball.players(p1)
+            ball.players(bot)
+            ball.update()
+            ball.show()
+            p1.show()
+            bot.show()
+            requestAnimationFrame(animate)
+            
+        }
 
-        ball.players(p1)
-        ball.players(p2)
-        ball.update()
-        ball.show()
-
-        p1.show()
-        p2.show()
-        requestAnimationFrame(animate)
     }
+    ball.style.width= '5px'
