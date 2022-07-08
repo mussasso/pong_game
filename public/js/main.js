@@ -4,7 +4,8 @@
 let random = Math.floor(Math.random()*7)
 let background = document.getElementsByTagName('canvas')[0]
 let joueur = document.getElementsByTagName('select')[0]
-console.log(joueur);
+let difficulte = document.getElementsByTagName('select')[1]
+
 
 
 
@@ -49,14 +50,13 @@ let context= canvas.getContext('2d'),
     context.scale(ratio, ratio)
 
     class Ball{
-        constructor(vx, vy , ax , ay)
+        constructor(vx, vy)
         {
             this.x= width/2
             this.y= height/2
             this.vx= vx;
             this.vy= vy;
-            this.ax=ax
-            this.ay=ay
+            
         }
         update()
         {
@@ -77,10 +77,7 @@ let context= canvas.getContext('2d'),
             if (this.x + this.r > width) {
                 Restartgame()
                 p1.score++
-                if (p1.score+1 == true) {
-                    this.vx += this.ax
-                    this.vy += this.ay
-                }
+                
                 if (p1.score == 10) {
                     alert('le joueur 1 a gagner')
                     p1.score = 0
@@ -89,10 +86,6 @@ let context= canvas.getContext('2d'),
             else if (this.x - this.r < 0) {
                 Restartgame()
                 p2.score++
-                if (p2.score == 2) {
-                    this.vx += 1
-                    this.vy += 1
-                }
                 if (p2.score == 10) {
                     alert('le joueur 1 a gagner')
                     p2.score = 0
@@ -115,7 +108,7 @@ let context= canvas.getContext('2d'),
             if (left < pright && right> pleft && top < pbottom && bottom > ptop) 
             {
                 this.vx *= -1
-                this.vx += 2
+                
             }
         }
         show()
@@ -145,7 +138,23 @@ let context= canvas.getContext('2d'),
                 context.fillRect(left , top , this.w , this.h)
         }
     }
-    let ball = new Ball(-4 , 5 ,1 , 1)
+    let random1= Math.floor(Math.random()*10+1)
+    let random2= Math.floor(Math.random()*2)
+    let hazard;
+    switch (random2) {
+        case 0:
+            hazard=random1
+            break;
+        case 1:
+            hazard=(random1) * (-1)
+            console.log(hazard);
+            break;
+    
+        default:
+            break;
+    }
+    
+    let ball = new Ball(hazard , random1)
     let p1 = new Player(20 , 250 )
     let p2 = new Player(width-20 , width - 400)
     let bot = new Player(width-20 , width - 400)
@@ -187,7 +196,25 @@ let context= canvas.getContext('2d'),
             requestAnimationFrame(animate)
             
         } else if (joueur.value == "ai") {
-            bot.y += ((ball.y - (bot.y + bot.h/2)))*0.1;
+            switch (difficulte.value) {
+                case 'easy':
+                bot.y += ((ball.y - (bot.y + bot.h/2)))*0.1;
+                    
+                    break;
+                case 'medium':
+                bot.y += ((ball.y - (bot.y + bot.h/2)));
+                    
+                    break;
+                case 'hard':
+                bot.y += ((ball.y - (bot.y + bot.h/2)))*1.3;
+                    
+                    break;
+            
+                default:
+                bot.y += ((ball.y - (bot.y + bot.h/2)));
+
+                    break;
+            }
             ball.players(p1)
             ball.players(bot)
             ball.update()
@@ -199,4 +226,3 @@ let context= canvas.getContext('2d'),
         }
 
     }
-    ball.style.width= '5px'
